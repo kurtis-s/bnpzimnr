@@ -1,0 +1,18 @@
+Package: bnpzimnr
+Type: Package
+Title: Bayesian Non-Parametric Zero-Inflated Multivariate Negative Binomial
+    Regression
+Version: 0.1.0
+Author: Kurtis Shuler
+Maintainer: Kurtis Shuler <kshuler@ucsc.edu>
+Description: Implementation of BNP-ZIMNR described in the accompanying paper 
+    "Bayesian Nonparametric Analysis for Zero Inflated Multivariate Count Data"
+Depends: R (>= 3.5.0)
+License: GPL
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    Rcpp,
+    overture
+LinkingTo: Rcpp
+RoxygenNote: 6.1.1

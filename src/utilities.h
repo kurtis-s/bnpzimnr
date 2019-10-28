@@ -1,0 +1,79 @@
+#ifndef UTILITIES_H
+#define UTILITIES_H
+
+#include <Rcpp.h>
+using namespace Rcpp;
+
+/* Functions ################################################################ */
+// [[Rcpp::export]]
+bool fnAprxEql(double x, double y) {
+    const double epsilon = 1.5E-7;
+    const double tolerance = 1.5E-7;
+
+    bool eql = false;
+    if((fabs(x) < tolerance) && (fabs(y) < tolerance)) {
+        eql = true;
+    }
+    else {
+        eql = fabs(x-y)/(fabs(x) + fabs(y) + epsilon) < tolerance;
+    }
+
+    return(eql);
+}
+
+// [[Rcpp::export]]
+bool fnAcceptProposal(const double & curr_log_lik, const double & prop_log_lik, const double log_curr_to_prop_prob = 0, const double log_prop_to_curr_prob = 0) {
+    double u = runif(1)(0);
+    bool accept = FALSE;
+    if(log(u) <= (prop_log_lik - curr_log_lik + log_prop_to_curr_prob - log_curr_to_prop_prob)) {
+        accept = TRUE;
+    }
+
+    return accept;
+}
+
+// [[Rcpp::export]]
+void fnMuMatCorrect(NumericMatrix Mu_mat, NumericMatrix Delta_mat, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Beta_mat, NumericVector rep_K) {
+    const int & n = Alpha_mat.nrow();
+    const int & J = Alpha_mat.ncol();
+
+    int ik=-1;
+    int K=-1;
+    for(int j=0; j<J; j++) {
+        ik=0;
+        for(int i=0; i<n; i++) {
+            K = rep_K[i];
+            for(int k=0; k<K; k++) {
+                // if( (Delta_mat(ik, j) == 1) && !fnAprxEql(log(Mu_mat(ik, j)), r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j)) ) {
+                if( (Delta_mat(ik, j) == 1) && !fnAprxEql(Mu_mat(ik, j), exp(r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j))) ) {
+                    Rcpp::Rcout << "i=" << i << std::endl;
+                    Rcpp::Rcout << "k=" << k << std::endl;
+                    Rcpp::Rcout << "ik=" << ik << std::endl;
+                    Rcpp::Rcout << "j=" << j << std::endl;
+                    Rcpp::Rcout << "r=" << r_vec[ik] << std::endl;
+                    Rcpp::Rcout << "alpha=" << Alpha_mat(i, j) << std::endl;
+                    Rcpp::Rcout << "beta=" << Beta_mat(k, j) << std::endl;
+                    Rcpp::Rcout <<  std::setprecision(30) << "Mu.ikj=" << Mu_mat(ik, j) << std::endl;
+                    Rcpp::Rcout <<  std::setprecision(30) << "Calculated Mu.ikj=" << exp(r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j)) << std::endl;
+                    Rcpp::Rcout <<  std::setprecision(30) << "log(Mu.ikj)=" << log(Mu_mat(ik, j)) << std::endl;
+                    Rcpp::Rcout <<  std::setprecision(30) << "Calculated log(Mu.ikj)=" << r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j) << std::endl << std::endl;
+                    stop("Mu.ikj inconsistent");
+                }
+                if( (Delta_mat(ik, j) == 0) && !(Mu_mat(ik, j)==0) ) {
+                    Rcpp::Rcout << "i=" << i << std::endl;
+                    Rcpp::Rcout << "k=" << k << std::endl;
+                    Rcpp::Rcout << "ik=" << ik << std::endl;
+                    Rcpp::Rcout << "j=" << j << std::endl;
+                    Rcpp::Rcout << "r=" << r_vec[ik] << std::endl;
+                    Rcpp::Rcout << "alpha=" << Alpha_mat(i, j) << std::endl;
+                    Rcpp::Rcout << "beta=" << Beta_mat(k, j) << std::endl;
+                    Rcpp::Rcout << "Mu.ikj=" << std::setprecision(30) << Mu_mat(ik, j) << std::endl;
+                    stop("delta.ikj = 0 but mu.ikj != 0");
+                }
+                ik++;
+            }
+        }
+    }
+}
+
+#endif
