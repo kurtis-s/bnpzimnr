@@ -5,7 +5,8 @@
 \title{Fit BNP-ZIMNR}
 \usage{
 zimnr(dat, n.save, thin, INIT, PRIOR, SETTINGS, adapt.stop = NA,
-  sanity.checks = TRUE)
+  delta.fixed = FALSE, poisson.model = FALSE, fixed.norm = FALSE,
+  X.mat = NA)
 }
 \arguments{
 \item{dat}{data frame of count data with samples in rows and counts in
@@ -41,10 +42,10 @@ iterations to run the MCMC chain}
     \item eta.alpha.vec; Mean parameters of the first component of the mixture-of-mixtures prior on the baseline abundances
     \item w.alpha.vec;  Mixture weights for the two Gaussian components of the baseline abundances
     \item lambda.alpha.vec; Indicators for the Gaussian component of the baseline abundances
-    \item Beta.mat; Change in abundance compared to the baseline abundance
-    \item C.beta.mat; Cluster assignments for Beta.mat
-    \item Beta.star.mat; Mean parameters for Beta.mat mixture
-    \item sigma.2.beta.vec; Variance parameters for Beta.mat mixture
+    \item Theta.mat; Change in abundance compared to the baseline abundance
+    \item C.theta.mat; Cluster assignments for Theta.mat
+    \item Theta.star.mat; Mean parameters for Theta.mat mixture
+    \item sigma.2.theta.vec; Variance parameters for Theta.mat mixture
 }}
 
 \item{PRIOR}{list of hyperparameters with elements:
@@ -52,22 +53,22 @@ iterations to run the MCMC chain}
     \item a.s; mean of s.j prior
     \item b.s.2; variance of s.j prior
     \item a.psi.r; dirichlet concentration parameter for psi.r
-    \item a.w.r; beta shape parameter for w.r
-    \item b.w.r; beta shape parameter for w.r
+    \item a.w.r; theta shape parameter for w.r
+    \item b.w.r; theta shape parameter for w.r
     \item u.r.2; normal variance for r.ik mixture
     \item upsilon.r; r.ik mean constraint
     \item b.eta.r.2; normal variance for eta.r
     \item a.psi.alpha; Dirichlet concentration parameter for psi.alpha
-    \item a.w.alpha; beta shape parameter for w.alpha
-    \item b.w.alpha; beta shape parameter for w.alpha
+    \item a.w.alpha; theta shape parameter for w.alpha
+    \item b.w.alpha; theta shape parameter for w.alpha
     \item u.alpha.2; normal variance for alpha mixture
     \item upsilon.alpha; alpha mean constraint
     \item b.eta.alpha.2; normal variance for eta.alpha
-    \item rho.beta; Dirichlet-Process concentration parameter for beta
-    \item a.beta.star; normal mean for beta.star
-    \item b.beta.star.2; normal variance for beta.star
-    \item a.sigma.beta; shape parameter for beta variance
-    \item b.sigma.beta; scale parameter for beta variance
+    \item rho.theta; Dirichlet-Process concentration parameter for theta
+    \item a.theta.star; normal mean for theta.star
+    \item b.theta.star.2; normal variance for theta.star
+    \item a.sigma.theta; shape parameter for theta variance
+    \item b.sigma.theta; scale parameter for theta variance
     \item rho.xi; Dirichlet-Process concentration parameter for xi
     \item a.xi.star; mean for xi.star
     \item b.xi.star.2; variance for xi.star
@@ -85,8 +86,8 @@ iterations to run the MCMC chain}
     \item L.alpha.trunc; Truncation level for alpha mixture
     \item w.ell.alpha.proposal.sd; Standard deviation for w.ell.alpha Metropolis proposal
     \item alpha.ij.proposal.sd; Standard deviation for alpha Metropolis proposal
-    \item L.beta.trunc; Truncation level for beta mixture
-    \item beta.kj.proposal.sd; Standard deviation for beta Metropolis proposal
+    \item L.theta.trunc; Truncation level for theta mixture
+    \item theta.kj.proposal.sd; Standard deviation for theta Metropolis proposal
     \item L.xi.trunc; Truncation level for xi mixture
     \item xi.kj.proposal.sd; Standard deviation for xi Metropolis proposal
 }}
@@ -127,9 +128,9 @@ SETTINGS$r.ik.proposal.sd <- 0.075
 SETTINGS$L.alpha.trunc <- 150
 SETTINGS$w.ell.alpha.proposal.sd <- 1
 SETTINGS$alpha.ij.proposal.sd <- 0.15
-### beta.kj
-SETTINGS$L.beta.trunc <- 50
-SETTINGS$beta.kj.proposal.sd <- 0.5
+### theta.kj
+SETTINGS$L.theta.trunc <- 50
+SETTINGS$theta.kj.proposal.sd <- 0.5
 ### epsilon.kj
 SETTINGS$L.xi.trunc <- 50
 SETTINGS$xi.kj.proposal.sd <- 0.3
@@ -149,8 +150,8 @@ Mu.ijk.hat.mat.no.off <- (Y.mat)/exp(R.rep.mat)
 y.mat.offset <- 1
 Mu.ijk.hat.mat <- (Y.mat+y.mat.offset)/exp(R.rep.mat) # Add offset so the log is not -Inf
 Alpha.hat.mat <- log(apply(Mu.ijk.hat.mat, 2, function(otu) tapply(otu, factor(dat$subject), FUN=mean)))
-Beta.ikj.hat.mat <- log(Y.mat + y.mat.offset) - R.rep.mat - Alpha.hat.mat
-Beta.hat.mat <- apply(Beta.ikj.hat.mat, 2, function(beta.j.vec) tapply(beta.j.vec, factor(dat$condition), FUN=mean))
+Theta.ikj.hat.mat <- log(Y.mat + y.mat.offset) - R.rep.mat - Alpha.hat.mat
+Theta.hat.mat <- apply(Theta.ikj.hat.mat, 2, function(theta.j.vec) tapply(theta.j.vec, factor(dat$condition), FUN=mean))
 
 # Prior -------------------------------------------------------------------
 PRIOR <- list()
@@ -171,12 +172,12 @@ PRIOR$b.w.alpha <- 1
 PRIOR$u.alpha.2 <- 2.0
 PRIOR$upsilon.alpha <- mean(log(Mu.ijk.hat.mat.no.off[Y.mat!=0]))
 PRIOR$b.eta.alpha.2 <- 1.0
-### beta.star.kl
-PRIOR$rho.beta <- 1
-PRIOR$a.beta.star <- 0
-PRIOR$b.beta.star.2 <- 10
-PRIOR$a.sigma.beta <- 1
-PRIOR$b.sigma.beta <- 1
+### theta.star.kl
+PRIOR$rho.theta <- 1
+PRIOR$a.theta.star <- 0
+PRIOR$b.theta.star.2 <- 10
+PRIOR$a.sigma.theta <- 1
+PRIOR$b.sigma.theta <- 1
 ### xi.star.kl
 PRIOR$rho.xi <- 1
 PRIOR$a.xi.star <- 2
@@ -192,6 +193,7 @@ INIT$s.vec <- exp(s.tilde.vec)
 ## r.ik
 INIT$r.vec <- r.hat.vec
 INIT$c.r.vec <- .bincode(INIT$r.vec, quantile(INIT$r.vec, (0:5)/5), right=TRUE, include.lowest=TRUE)
+INIT$d.r.vec <- tabulate(INIT$c.r.vec, nbins=SETTINGS$L.r.trunc)
 INIT$eta.r.vec <- rnorm(SETTINGS$L.r.trunc, 0, 1)
 INIT$w.r.vec <- rbeta(SETTINGS$L.r.trunc, 1, 1)
 INIT$lambda.r.vec <- rbinom(length(INIT$r.vec), size=1, prob=INIT$w.r.vec[INIT$c.r.vec])
@@ -226,21 +228,22 @@ INIT$lambda.alpha.vec <- rbinom(length(INIT$Alpha.mat), size=1, prob=INIT$w.alph
 INIT$Alpha.mat[A.mat==0] <- NA
 INIT$lambda.alpha.vec[A.mat==0] <- NA
 INIT$c.alpha.vec[A.mat==0] <- NA
-# beta.kj
-INIT$Beta.mat <- Beta.hat.mat
-INIT$Beta.mat[Delta.sum.mat==0] <- 0
-INIT$Beta.mat[B.mat==0] <- NA
-n.beta.bins <- 5
-INIT$C.beta.mat <- t(apply(INIT$Beta.mat, 1, function(beta.k.vec) {
-    .bincode(beta.k.vec, quantile(beta.k.vec, (0:n.beta.bins)/n.beta.bins, na.rm=TRUE), right=TRUE, include.lowest=TRUE)
+INIT$d.alpha.vec <- tabulate(INIT$c.alpha.vec, nbins=SETTINGS$L.alpha.trunc)
+# theta.kj
+INIT$Theta.mat <- Theta.hat.mat
+INIT$Theta.mat[Delta.sum.mat==0] <- 0
+INIT$Theta.mat[B.mat==0] <- NA
+n.theta.bins <- 5
+INIT$C.theta.mat <- t(apply(INIT$Theta.mat, 1, function(theta.k.vec) {
+    .bincode(theta.k.vec, quantile(theta.k.vec, (0:n.theta.bins)/n.theta.bins, na.rm=TRUE), right=TRUE, include.lowest=TRUE)
 }))
-INIT$C.beta.mat[INIT$Beta.mat==0] <- NA
-INIT$Beta.star.mat <- matrix(0, nrow=K, ncol=SETTINGS$L.beta.trunc)
+INIT$C.theta.mat[INIT$Theta.mat==0] <- NA
+INIT$Theta.star.mat <- matrix(0, nrow=K, ncol=SETTINGS$L.theta.trunc)
 for(k in 1:K) {
-    beta.star.k.init <- tapply(INIT$Beta.mat[k,], INDEX=INIT$C.beta.mat[k,], FUN=mean)
-    INIT$Beta.star.mat[k,] <- replace(INIT$Beta.star.mat[k,], 1:length(beta.star.k.init), beta.star.k.init)
+    theta.star.k.init <- tapply(INIT$Theta.mat[k,], INDEX=INIT$C.theta.mat[k,], FUN=mean)
+    INIT$Theta.star.mat[k,] <- replace(INIT$Theta.star.mat[k,], 1:length(theta.star.k.init), theta.star.k.init)
 }
-INIT$sigma.2.beta.vec <- rep(0.25, K)
+INIT$sigma.2.theta.vec <- rep(0.25, K)
 
 # Model fit ---------------------------------------------------------------
 samples <- zimnr(dat, n.save, thin, INIT, PRIOR, SETTINGS)

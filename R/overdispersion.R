@@ -13,7 +13,7 @@ fnSampKappa2 <- function(s.vec, h.scal, a.kappa, b.kappa) {
     s.tilde.vec <- log(s.vec)
     J <- length(s.tilde.vec)
     alpha.param <- a.kappa + J/2
-    beta.param <- b.kappa + (1/2)*sum( (s.tilde.vec - h.scal)^2)
+    theta.param <- b.kappa + (1/2)*sum( (s.tilde.vec - h.scal)^2)
 
-    return(1/rgamma(1, alpha.param, beta.param))
+    return(1/rgamma(1, alpha.param, theta.param))
 }

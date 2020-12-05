@@ -1,4 +1,4 @@
-#' Sample from Dirichlet
+#' Sample from Dirichlet, see MCMCpack
 #'
 #' @export
 fnRdirichlet <- function (n, alpha) {
@@ -10,6 +10,7 @@ fnRdirichlet <- function (n, alpha) {
 
 #' Sample Psi
 #'
+#' @export
 fnSampPsi <- function(d.vec, a.psi) {
     #' @param d.vec vector of length L of cluster sizes
     #' @param a.psi from the prior, vector of length L

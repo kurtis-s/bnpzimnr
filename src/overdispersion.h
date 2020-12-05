@@ -13,7 +13,7 @@ double fnSjTildeLogLik(const double & s_j, NumericVector mu_j_vec,
                        NumericVector rep_K, NumericVector y_j_vec, NumericVector delta_j_vec,
                        const double & h_scal, const double & kappa_2) {
     return R::dnorm(log(s_j), h_scal, sqrt(kappa_2), TRUE) +
-        fnOtuLogLikNoFac(s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec);
+        fnOtuLogLik(s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec);
 }
 
 // [[Rcpp::export]]

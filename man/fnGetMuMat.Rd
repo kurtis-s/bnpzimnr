@@ -4,7 +4,8 @@
 \alias{fnGetMuMat}
 \title{Calculate Mu.mat from the other parameters}
 \usage{
-fnGetMuMat(r.vec, Alpha.mat, Beta.mat, Delta.mat, s.vec)
+fnGetMuMat(r.vec, Alpha.mat, Theta.mat, Delta.mat, s.vec, i.vec, k.vec,
+  X.mat = NA, Beta.mat = NA)
 }
 \description{
 Calculate Mu.mat from the other parameters

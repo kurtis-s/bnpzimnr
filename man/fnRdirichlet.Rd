@@ -2,10 +2,10 @@
 % Please edit documentation in R/normalization.R
 \name{fnRdirichlet}
 \alias{fnRdirichlet}
-\title{Sample from Dirichlet}
+\title{Sample from Dirichlet, see MCMCpack}
 \usage{
 fnRdirichlet(n, alpha)
 }
 \description{
-Sample from Dirichlet
+Sample from Dirichlet, see MCMCpack
 }

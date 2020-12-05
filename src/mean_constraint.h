@@ -144,6 +144,18 @@ NumericVector fnSampEtaVec(NumericVector eta_vec, NumericVector param_vec, Numer
         norm_variance = 1.0/norm_precision;
         norm_mean = (rho1*m1 + rho2*m2 + rho3*m3)/norm_precision;
 
+        // Rcpp::Rcout << "m1=" << m1 << std::endl;
+        // Rcpp::Rcout << "m2=" << m2 << std::endl;
+        // Rcpp::Rcout << "m3=" << m3 << std::endl;
+        // Rcpp::Rcout << "norm_mean=" << norm_mean << std::endl;
+        // Rcpp::Rcout << "m1_total=" << m1_total << std::endl;
+        // Rcpp::Rcout << "m2_total=" << m2_total << std::endl;
+        // Rcpp::Rcout << "|A|=" << set_A_size << std::endl;
+        // Rcpp::Rcout << "|B|=" << set_B_size << std::endl;
+        // Rcpp::Rcout << "rho1=" << rho1 << std::endl;
+        // Rcpp::Rcout << "rho2=" << rho2 << std::endl;
+        // Rcpp::Rcout << "rho3=" << rho3 << std::endl;
+
         eta_vec(ell) = R::rnorm(norm_mean, sqrt(norm_variance));
     }
 
@@ -204,7 +216,7 @@ IntegerVector fnSampCVec(IntegerVector c_vec, IntegerVector d_vec,
             c_vec(loop_idx) = new_c;
 
             if(new_c != old_c) { // Need to update cluster counts
-                d_vec(old_c-1) -= 1;
+                d_vec(old_c-1) -= 1; // Don't forget about C's 0 indexing here
                 d_vec(new_c-1) += 1;
             }
         }
@@ -228,7 +240,7 @@ IntegerVector fnSampLambdaVec(IntegerVector lambda_vec, NumericVector param_vec,
     double mean1;
     double mean2;
     double p; // Probability that lambda=1
-    for(int loop_idx=0; loop_idx < c_vec.size(); loop_idx++) {
+    for(int loop_idx=0; loop_idx < c_vec.size(); loop_idx++) { // Loop index is tk for w_\ell^r; or j for w_\ell^\theta
         if(!R_IsNA(param_vec[loop_idx])) {
             ell_idx1 = c_vec(loop_idx);
             ell_idx0 = ell_idx1 - 1;
@@ -246,6 +258,10 @@ IntegerVector fnSampLambdaVec(IntegerVector lambda_vec, NumericVector param_vec,
             new_lambda = R::rbinom(1, p);
 
             lambda_vec(loop_idx) = new_lambda;
+
+            // Rcpp::Rcout << "log_probs=" << log_probs << std::endl;
+            // Rcpp::Rcout << "probs=" << probs << std::endl;
+            // Rcpp::Rcout << "p=" << p << std::endl;
         }
     }
 

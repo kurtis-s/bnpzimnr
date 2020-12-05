@@ -3,6 +3,7 @@
 #include "mean_constraint.h"
 #include "normalization.h"
 #include "alpha.h"
+#include "theta.h"
 #include "beta.h"
 #include "epsilon.h"
 #include "sigma_2.h"

@@ -9,20 +9,12 @@ fnSampAlphaMat <- function(Alpha_mat, Mu_mat, s_vec, lambda_vec, c_vec, eta_vec,
     .Call(`_bnpzimnr_fnSampAlphaMat`, Alpha_mat, Mu_mat, s_vec, lambda_vec, c_vec, eta_vec, w_vec, rep_K, upsilon_alpha, u_2, Y_mat, Delta_mat, alpha_ij_proposal_sd)
 }
 
-fnGetMuJVecProp <- function(k, mu_j_vec_curr, beta_kj_curr, beta_kj_prop, r_vec, alpha_j_vec, condition, subject) {
-    .Call(`_bnpzimnr_fnGetMuJVecProp`, k, mu_j_vec_curr, beta_kj_curr, beta_kj_prop, r_vec, alpha_j_vec, condition, subject)
+fnSampBetaMat <- function(Beta_mat, Mu_mat, Delta_mat, s_vec, tau_2_vec, X_mat, Y_mat, rep_K, beta_j_proposal_sd_vec) {
+    .Call(`_bnpzimnr_fnSampBetaMat`, Beta_mat, Mu_mat, Delta_mat, s_vec, tau_2_vec, X_mat, Y_mat, rep_K, beta_j_proposal_sd_vec)
 }
 
-fnSampBetaMat <- function(Beta_mat, Mu_mat, C_beta_mat, Beta_star_mat, Delta_mat, sigma_2_beta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, beta_kj_proposal_sd) {
-    .Call(`_bnpzimnr_fnSampBetaMat`, Beta_mat, Mu_mat, C_beta_mat, Beta_star_mat, Delta_mat, sigma_2_beta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, beta_kj_proposal_sd)
-}
-
-fnSampBetaMatMarg <- function(Beta_mat, Mu_mat, psi_beta_vec, Beta_star_mat, Delta_mat, sigma_2_beta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, beta_kj_proposal_sd) {
-    .Call(`_bnpzimnr_fnSampBetaMatMarg`, Beta_mat, Mu_mat, psi_beta_vec, Beta_star_mat, Delta_mat, sigma_2_beta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, beta_kj_proposal_sd)
-}
-
-fnSampDeltaMat <- function(Delta_mat, Epsilon_mat, Beta_mat, C_beta_mat, d_beta_vec, Beta_star_mat, psi_beta_vec, sigma_2_beta_vec, Alpha_mat, r_vec, s_vec, Mu_mat, Y_mat, condition, subject, beta_kj_proposal_sd, psi_alpha_vec, w_alpha_vec, eta_alpha_vec, c_alpha_vec, d_alpha_vec, lambda_alpha_vec, rep_K, upsilon_alpha, u_alpha_2) {
-    .Call(`_bnpzimnr_fnSampDeltaMat`, Delta_mat, Epsilon_mat, Beta_mat, C_beta_mat, d_beta_vec, Beta_star_mat, psi_beta_vec, sigma_2_beta_vec, Alpha_mat, r_vec, s_vec, Mu_mat, Y_mat, condition, subject, beta_kj_proposal_sd, psi_alpha_vec, w_alpha_vec, eta_alpha_vec, c_alpha_vec, d_alpha_vec, lambda_alpha_vec, rep_K, upsilon_alpha, u_alpha_2)
+fnSampDeltaMat <- function(Delta_mat, Epsilon_mat, Theta_mat, C_theta_mat, d_theta_vec, Theta_star_mat, psi_theta_vec, sigma_2_theta_vec, Alpha_mat, r_vec, s_vec, Mu_mat, Y_mat, condition, subject, theta_kj_proposal_sd, psi_alpha_vec, w_alpha_vec, eta_alpha_vec, c_alpha_vec, d_alpha_vec, lambda_alpha_vec, rep_K, Xtbeta_mat, upsilon_alpha, u_alpha_2) {
+    .Call(`_bnpzimnr_fnSampDeltaMat`, Delta_mat, Epsilon_mat, Theta_mat, C_theta_mat, d_theta_vec, Theta_star_mat, psi_theta_vec, sigma_2_theta_vec, Alpha_mat, r_vec, s_vec, Mu_mat, Y_mat, condition, subject, theta_kj_proposal_sd, psi_alpha_vec, w_alpha_vec, eta_alpha_vec, c_alpha_vec, d_alpha_vec, lambda_alpha_vec, rep_K, Xtbeta_mat, upsilon_alpha, u_alpha_2)
 }
 
 fnStickBreak <- function(weights) {
@@ -57,28 +49,24 @@ fnSampXiMatMarg <- function(Xi_mat, Epsilon_mat, Delta_mat, Xi_star_mat, psi_xi_
     .Call(`_bnpzimnr_fnSampXiMatMarg`, Xi_mat, Epsilon_mat, Delta_mat, Xi_star_mat, psi_xi_vec, sigma_2_xi_vec, condition, xi_kj_proposal_sd)
 }
 
-fnLogLikNoGamma <- function(y_ikj, s_j, mu_ikj, delta_ikj) {
-    .Call(`_bnpzimnr_fnLogLikNoGamma`, y_ikj, s_j, mu_ikj, delta_ikj)
+fnLogLik <- function(y_ikj, s_j, mu_ikj, delta_ikj) {
+    .Call(`_bnpzimnr_fnLogLik`, y_ikj, s_j, mu_ikj, delta_ikj)
 }
 
-fnLogLikNoFac <- function(y_ikj, s_j, mu_ikj, delta_ikj) {
-    .Call(`_bnpzimnr_fnLogLikNoFac`, y_ikj, s_j, mu_ikj, delta_ikj)
-}
-
-fnOtuLogLikNoFac <- function(s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec) {
-    .Call(`_bnpzimnr_fnOtuLogLikNoFac`, s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec)
+fnOtuLogLik <- function(s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec) {
+    .Call(`_bnpzimnr_fnOtuLogLik`, s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec)
 }
 
 fnSampleLogLikNoGamma <- function(mu_ik_vec, s_vec, y_ik_vec, delta_ik_vec) {
     .Call(`_bnpzimnr_fnSampleLogLikNoGamma`, mu_ik_vec, s_vec, y_ik_vec, delta_ik_vec)
 }
 
-fnRepLogLikNoGamma <- function(mu_ij_vec, s_j, y_ij_vec, delta_ij_vec) {
-    .Call(`_bnpzimnr_fnRepLogLikNoGamma`, mu_ij_vec, s_j, y_ij_vec, delta_ij_vec)
+fnRepLogLik <- function(mu_ij_vec, s_j, y_ij_vec, delta_ij_vec) {
+    .Call(`_bnpzimnr_fnRepLogLik`, mu_ij_vec, s_j, y_ij_vec, delta_ij_vec)
 }
 
-fnSubjectLogLikNoGamma <- function(k, y_j_vec, s_j, mu_j_vec, delta_j_vec, condition) {
-    .Call(`_bnpzimnr_fnSubjectLogLikNoGamma`, k, y_j_vec, s_j, mu_j_vec, delta_j_vec, condition)
+fnSubjectLogLik <- function(k, y_j_vec, s_j, mu_j_vec, delta_j_vec, condition) {
+    .Call(`_bnpzimnr_fnSubjectLogLik`, k, y_j_vec, s_j, mu_j_vec, delta_j_vec, condition)
 }
 
 fnWlLogLik <- function(ell_idx1, w_ell, param_vec, lambda_vec, c_vec, eta_vec, upsilon, a_w, b_w, u_2) {
@@ -129,6 +117,18 @@ fnSampSigma2 <- function(Param_mat, Param_star_mat, C_mat, a_param, b_param) {
     .Call(`_bnpzimnr_fnSampSigma2`, Param_mat, Param_star_mat, C_mat, a_param, b_param)
 }
 
+fnGetMuJVecProp <- function(k, mu_j_vec_curr, theta_kj_curr, theta_kj_prop, r_vec, alpha_j_vec, condition, subject) {
+    .Call(`_bnpzimnr_fnGetMuJVecProp`, k, mu_j_vec_curr, theta_kj_curr, theta_kj_prop, r_vec, alpha_j_vec, condition, subject)
+}
+
+fnSampThetaMat <- function(Theta_mat, Mu_mat, C_theta_mat, Theta_star_mat, Delta_mat, sigma_2_theta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, theta_kj_proposal_sd) {
+    .Call(`_bnpzimnr_fnSampThetaMat`, Theta_mat, Mu_mat, C_theta_mat, Theta_star_mat, Delta_mat, sigma_2_theta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, theta_kj_proposal_sd)
+}
+
+fnSampThetaMatMarg <- function(Theta_mat, Mu_mat, psi_theta_vec, Theta_star_mat, Delta_mat, sigma_2_theta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, theta_kj_proposal_sd) {
+    .Call(`_bnpzimnr_fnSampThetaMatMarg`, Theta_mat, Mu_mat, psi_theta_vec, Theta_star_mat, Delta_mat, sigma_2_theta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, theta_kj_proposal_sd)
+}
+
 fnAprxEql <- function(x, y) {
     .Call(`_bnpzimnr_fnAprxEql`, x, y)
 }
@@ -137,7 +137,7 @@ fnAcceptProposal <- function(curr_log_lik, prop_log_lik, log_curr_to_prop_prob =
     .Call(`_bnpzimnr_fnAcceptProposal`, curr_log_lik, prop_log_lik, log_curr_to_prop_prob, log_prop_to_curr_prob)
 }
 
-fnMuMatCorrect <- function(Mu_mat, Delta_mat, r_vec, Alpha_mat, Beta_mat, rep_K) {
-    invisible(.Call(`_bnpzimnr_fnMuMatCorrect`, Mu_mat, Delta_mat, r_vec, Alpha_mat, Beta_mat, rep_K))
+fnMuMatCorrect <- function(Mu_mat, Delta_mat, r_vec, Alpha_mat, Theta_mat, rep_K, subject, condition, Xtbeta_mat_ = NULL) {
+    invisible(.Call(`_bnpzimnr_fnMuMatCorrect`, Mu_mat, Delta_mat, r_vec, Alpha_mat, Theta_mat, rep_K, subject, condition, Xtbeta_mat_))
 }
 

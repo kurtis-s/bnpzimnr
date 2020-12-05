@@ -48,88 +48,39 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// fnGetMuJVecProp
-NumericVector fnGetMuJVecProp(const double& k, NumericVector mu_j_vec_curr, const double& beta_kj_curr, const double& beta_kj_prop, NumericVector r_vec, NumericVector alpha_j_vec, NumericVector condition, NumericVector subject);
-RcppExport SEXP _bnpzimnr_fnGetMuJVecProp(SEXP kSEXP, SEXP mu_j_vec_currSEXP, SEXP beta_kj_currSEXP, SEXP beta_kj_propSEXP, SEXP r_vecSEXP, SEXP alpha_j_vecSEXP, SEXP conditionSEXP, SEXP subjectSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const double& >::type k(kSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type mu_j_vec_curr(mu_j_vec_currSEXP);
-    Rcpp::traits::input_parameter< const double& >::type beta_kj_curr(beta_kj_currSEXP);
-    Rcpp::traits::input_parameter< const double& >::type beta_kj_prop(beta_kj_propSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alpha_j_vec(alpha_j_vecSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnGetMuJVecProp(k, mu_j_vec_curr, beta_kj_curr, beta_kj_prop, r_vec, alpha_j_vec, condition, subject));
-    return rcpp_result_gen;
-END_RCPP
-}
 // fnSampBetaMat
-NumericMatrix fnSampBetaMat(NumericMatrix Beta_mat, NumericMatrix Mu_mat, NumericMatrix C_beta_mat, NumericMatrix Beta_star_mat, NumericMatrix Delta_mat, NumericVector sigma_2_beta_vec, NumericVector s_vec, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Y_mat, NumericVector condition, NumericVector subject, NumericMatrix B_mat, NumericMatrix Delta_sum_mat, const double& beta_kj_proposal_sd);
-RcppExport SEXP _bnpzimnr_fnSampBetaMat(SEXP Beta_matSEXP, SEXP Mu_matSEXP, SEXP C_beta_matSEXP, SEXP Beta_star_matSEXP, SEXP Delta_matSEXP, SEXP sigma_2_beta_vecSEXP, SEXP s_vecSEXP, SEXP r_vecSEXP, SEXP Alpha_matSEXP, SEXP Y_matSEXP, SEXP conditionSEXP, SEXP subjectSEXP, SEXP B_matSEXP, SEXP Delta_sum_matSEXP, SEXP beta_kj_proposal_sdSEXP) {
+NumericMatrix fnSampBetaMat(NumericMatrix Beta_mat, NumericMatrix Mu_mat, NumericMatrix Delta_mat, NumericVector s_vec, NumericVector tau_2_vec, NumericMatrix X_mat, NumericMatrix Y_mat, NumericVector rep_K, NumericVector beta_j_proposal_sd_vec);
+RcppExport SEXP _bnpzimnr_fnSampBetaMat(SEXP Beta_matSEXP, SEXP Mu_matSEXP, SEXP Delta_matSEXP, SEXP s_vecSEXP, SEXP tau_2_vecSEXP, SEXP X_matSEXP, SEXP Y_matSEXP, SEXP rep_KSEXP, SEXP beta_j_proposal_sd_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type Beta_mat(Beta_matSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Mu_mat(Mu_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type C_beta_mat(C_beta_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Beta_star_mat(Beta_star_matSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Delta_mat(Delta_matSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sigma_2_beta_vec(sigma_2_beta_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type s_vec(s_vecSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Alpha_mat(Alpha_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type tau_2_vec(tau_2_vecSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type X_mat(X_matSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Y_mat(Y_matSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type B_mat(B_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_sum_mat(Delta_sum_matSEXP);
-    Rcpp::traits::input_parameter< const double& >::type beta_kj_proposal_sd(beta_kj_proposal_sdSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnSampBetaMat(Beta_mat, Mu_mat, C_beta_mat, Beta_star_mat, Delta_mat, sigma_2_beta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, beta_kj_proposal_sd));
-    return rcpp_result_gen;
-END_RCPP
-}
-// fnSampBetaMatMarg
-NumericMatrix fnSampBetaMatMarg(NumericMatrix Beta_mat, NumericMatrix Mu_mat, NumericVector psi_beta_vec, NumericMatrix Beta_star_mat, NumericMatrix Delta_mat, NumericVector sigma_2_beta_vec, NumericVector s_vec, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Y_mat, NumericVector condition, NumericVector subject, NumericMatrix B_mat, NumericMatrix Delta_sum_mat, const double& beta_kj_proposal_sd);
-RcppExport SEXP _bnpzimnr_fnSampBetaMatMarg(SEXP Beta_matSEXP, SEXP Mu_matSEXP, SEXP psi_beta_vecSEXP, SEXP Beta_star_matSEXP, SEXP Delta_matSEXP, SEXP sigma_2_beta_vecSEXP, SEXP s_vecSEXP, SEXP r_vecSEXP, SEXP Alpha_matSEXP, SEXP Y_matSEXP, SEXP conditionSEXP, SEXP subjectSEXP, SEXP B_matSEXP, SEXP Delta_sum_matSEXP, SEXP beta_kj_proposal_sdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type Beta_mat(Beta_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Mu_mat(Mu_matSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type psi_beta_vec(psi_beta_vecSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Beta_star_mat(Beta_star_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_mat(Delta_matSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sigma_2_beta_vec(sigma_2_beta_vecSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type s_vec(s_vecSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Alpha_mat(Alpha_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Y_mat(Y_matSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type B_mat(B_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_sum_mat(Delta_sum_matSEXP);
-    Rcpp::traits::input_parameter< const double& >::type beta_kj_proposal_sd(beta_kj_proposal_sdSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnSampBetaMatMarg(Beta_mat, Mu_mat, psi_beta_vec, Beta_star_mat, Delta_mat, sigma_2_beta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, beta_kj_proposal_sd));
+    Rcpp::traits::input_parameter< NumericVector >::type rep_K(rep_KSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type beta_j_proposal_sd_vec(beta_j_proposal_sd_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(fnSampBetaMat(Beta_mat, Mu_mat, Delta_mat, s_vec, tau_2_vec, X_mat, Y_mat, rep_K, beta_j_proposal_sd_vec));
     return rcpp_result_gen;
 END_RCPP
 }
 // fnSampDeltaMat
-NumericMatrix fnSampDeltaMat(NumericMatrix Delta_mat, NumericMatrix Epsilon_mat, NumericMatrix Beta_mat, NumericMatrix C_beta_mat, IntegerVector d_beta_vec, NumericMatrix Beta_star_mat, NumericVector psi_beta_vec, NumericVector sigma_2_beta_vec, NumericMatrix Alpha_mat, NumericVector r_vec, NumericVector s_vec, NumericMatrix Mu_mat, NumericMatrix Y_mat, NumericVector condition, NumericVector subject, const double& beta_kj_proposal_sd, NumericVector psi_alpha_vec, NumericVector w_alpha_vec, NumericVector eta_alpha_vec, IntegerVector c_alpha_vec, IntegerVector d_alpha_vec, IntegerVector lambda_alpha_vec, NumericVector rep_K, const double& upsilon_alpha, const double& u_alpha_2);
-RcppExport SEXP _bnpzimnr_fnSampDeltaMat(SEXP Delta_matSEXP, SEXP Epsilon_matSEXP, SEXP Beta_matSEXP, SEXP C_beta_matSEXP, SEXP d_beta_vecSEXP, SEXP Beta_star_matSEXP, SEXP psi_beta_vecSEXP, SEXP sigma_2_beta_vecSEXP, SEXP Alpha_matSEXP, SEXP r_vecSEXP, SEXP s_vecSEXP, SEXP Mu_matSEXP, SEXP Y_matSEXP, SEXP conditionSEXP, SEXP subjectSEXP, SEXP beta_kj_proposal_sdSEXP, SEXP psi_alpha_vecSEXP, SEXP w_alpha_vecSEXP, SEXP eta_alpha_vecSEXP, SEXP c_alpha_vecSEXP, SEXP d_alpha_vecSEXP, SEXP lambda_alpha_vecSEXP, SEXP rep_KSEXP, SEXP upsilon_alphaSEXP, SEXP u_alpha_2SEXP) {
+NumericMatrix fnSampDeltaMat(NumericMatrix Delta_mat, NumericMatrix Epsilon_mat, NumericMatrix Theta_mat, NumericMatrix C_theta_mat, IntegerVector d_theta_vec, NumericMatrix Theta_star_mat, NumericVector psi_theta_vec, NumericVector sigma_2_theta_vec, NumericMatrix Alpha_mat, NumericVector r_vec, NumericVector s_vec, NumericMatrix Mu_mat, NumericMatrix Y_mat, NumericVector condition, NumericVector subject, const double& theta_kj_proposal_sd, NumericVector psi_alpha_vec, NumericVector w_alpha_vec, NumericVector eta_alpha_vec, IntegerVector c_alpha_vec, IntegerVector d_alpha_vec, IntegerVector lambda_alpha_vec, NumericVector rep_K, NumericMatrix Xtbeta_mat, const double& upsilon_alpha, const double& u_alpha_2);
+RcppExport SEXP _bnpzimnr_fnSampDeltaMat(SEXP Delta_matSEXP, SEXP Epsilon_matSEXP, SEXP Theta_matSEXP, SEXP C_theta_matSEXP, SEXP d_theta_vecSEXP, SEXP Theta_star_matSEXP, SEXP psi_theta_vecSEXP, SEXP sigma_2_theta_vecSEXP, SEXP Alpha_matSEXP, SEXP r_vecSEXP, SEXP s_vecSEXP, SEXP Mu_matSEXP, SEXP Y_matSEXP, SEXP conditionSEXP, SEXP subjectSEXP, SEXP theta_kj_proposal_sdSEXP, SEXP psi_alpha_vecSEXP, SEXP w_alpha_vecSEXP, SEXP eta_alpha_vecSEXP, SEXP c_alpha_vecSEXP, SEXP d_alpha_vecSEXP, SEXP lambda_alpha_vecSEXP, SEXP rep_KSEXP, SEXP Xtbeta_matSEXP, SEXP upsilon_alphaSEXP, SEXP u_alpha_2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type Delta_mat(Delta_matSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Epsilon_mat(Epsilon_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Beta_mat(Beta_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type C_beta_mat(C_beta_matSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type d_beta_vec(d_beta_vecSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Beta_star_mat(Beta_star_matSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type psi_beta_vec(psi_beta_vecSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sigma_2_beta_vec(sigma_2_beta_vecSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_mat(Theta_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type C_theta_mat(C_theta_matSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type d_theta_vec(d_theta_vecSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_star_mat(Theta_star_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type psi_theta_vec(psi_theta_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sigma_2_theta_vec(sigma_2_theta_vecSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Alpha_mat(Alpha_matSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type s_vec(s_vecSEXP);
@@ -137,7 +88,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericMatrix >::type Y_mat(Y_matSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
-    Rcpp::traits::input_parameter< const double& >::type beta_kj_proposal_sd(beta_kj_proposal_sdSEXP);
+    Rcpp::traits::input_parameter< const double& >::type theta_kj_proposal_sd(theta_kj_proposal_sdSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type psi_alpha_vec(psi_alpha_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type w_alpha_vec(w_alpha_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type eta_alpha_vec(eta_alpha_vecSEXP);
@@ -145,9 +96,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< IntegerVector >::type d_alpha_vec(d_alpha_vecSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type lambda_alpha_vec(lambda_alpha_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type rep_K(rep_KSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Xtbeta_mat(Xtbeta_matSEXP);
     Rcpp::traits::input_parameter< const double& >::type upsilon_alpha(upsilon_alphaSEXP);
     Rcpp::traits::input_parameter< const double& >::type u_alpha_2(u_alpha_2SEXP);
-    rcpp_result_gen = Rcpp::wrap(fnSampDeltaMat(Delta_mat, Epsilon_mat, Beta_mat, C_beta_mat, d_beta_vec, Beta_star_mat, psi_beta_vec, sigma_2_beta_vec, Alpha_mat, r_vec, s_vec, Mu_mat, Y_mat, condition, subject, beta_kj_proposal_sd, psi_alpha_vec, w_alpha_vec, eta_alpha_vec, c_alpha_vec, d_alpha_vec, lambda_alpha_vec, rep_K, upsilon_alpha, u_alpha_2));
+    rcpp_result_gen = Rcpp::wrap(fnSampDeltaMat(Delta_mat, Epsilon_mat, Theta_mat, C_theta_mat, d_theta_vec, Theta_star_mat, psi_theta_vec, sigma_2_theta_vec, Alpha_mat, r_vec, s_vec, Mu_mat, Y_mat, condition, subject, theta_kj_proposal_sd, psi_alpha_vec, w_alpha_vec, eta_alpha_vec, c_alpha_vec, d_alpha_vec, lambda_alpha_vec, rep_K, Xtbeta_mat, upsilon_alpha, u_alpha_2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -281,9 +233,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// fnLogLikNoGamma
-double fnLogLikNoGamma(const double& y_ikj, const double& s_j, const double& mu_ikj, const double& delta_ikj);
-RcppExport SEXP _bnpzimnr_fnLogLikNoGamma(SEXP y_ikjSEXP, SEXP s_jSEXP, SEXP mu_ikjSEXP, SEXP delta_ikjSEXP) {
+// fnLogLik
+double fnLogLik(const double& y_ikj, const double& s_j, const double& mu_ikj, const double& delta_ikj);
+RcppExport SEXP _bnpzimnr_fnLogLik(SEXP y_ikjSEXP, SEXP s_jSEXP, SEXP mu_ikjSEXP, SEXP delta_ikjSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -291,27 +243,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type s_j(s_jSEXP);
     Rcpp::traits::input_parameter< const double& >::type mu_ikj(mu_ikjSEXP);
     Rcpp::traits::input_parameter< const double& >::type delta_ikj(delta_ikjSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnLogLikNoGamma(y_ikj, s_j, mu_ikj, delta_ikj));
+    rcpp_result_gen = Rcpp::wrap(fnLogLik(y_ikj, s_j, mu_ikj, delta_ikj));
     return rcpp_result_gen;
 END_RCPP
 }
-// fnLogLikNoFac
-double fnLogLikNoFac(const double& y_ikj, const double& s_j, const double& mu_ikj, const double& delta_ikj);
-RcppExport SEXP _bnpzimnr_fnLogLikNoFac(SEXP y_ikjSEXP, SEXP s_jSEXP, SEXP mu_ikjSEXP, SEXP delta_ikjSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const double& >::type y_ikj(y_ikjSEXP);
-    Rcpp::traits::input_parameter< const double& >::type s_j(s_jSEXP);
-    Rcpp::traits::input_parameter< const double& >::type mu_ikj(mu_ikjSEXP);
-    Rcpp::traits::input_parameter< const double& >::type delta_ikj(delta_ikjSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnLogLikNoFac(y_ikj, s_j, mu_ikj, delta_ikj));
-    return rcpp_result_gen;
-END_RCPP
-}
-// fnOtuLogLikNoFac
-double fnOtuLogLikNoFac(const double& s_j, NumericVector mu_j_vec, NumericVector rep_K, NumericVector y_j_vec, NumericVector delta_j_vec);
-RcppExport SEXP _bnpzimnr_fnOtuLogLikNoFac(SEXP s_jSEXP, SEXP mu_j_vecSEXP, SEXP rep_KSEXP, SEXP y_j_vecSEXP, SEXP delta_j_vecSEXP) {
+// fnOtuLogLik
+double fnOtuLogLik(const double& s_j, NumericVector mu_j_vec, NumericVector rep_K, NumericVector y_j_vec, NumericVector delta_j_vec);
+RcppExport SEXP _bnpzimnr_fnOtuLogLik(SEXP s_jSEXP, SEXP mu_j_vecSEXP, SEXP rep_KSEXP, SEXP y_j_vecSEXP, SEXP delta_j_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -320,7 +258,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type rep_K(rep_KSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type y_j_vec(y_j_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type delta_j_vec(delta_j_vecSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnOtuLogLikNoFac(s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec));
+    rcpp_result_gen = Rcpp::wrap(fnOtuLogLik(s_j, mu_j_vec, rep_K, y_j_vec, delta_j_vec));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -338,9 +276,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// fnRepLogLikNoGamma
-double fnRepLogLikNoGamma(NumericVector mu_ij_vec, const double& s_j, NumericVector y_ij_vec, NumericVector delta_ij_vec);
-RcppExport SEXP _bnpzimnr_fnRepLogLikNoGamma(SEXP mu_ij_vecSEXP, SEXP s_jSEXP, SEXP y_ij_vecSEXP, SEXP delta_ij_vecSEXP) {
+// fnRepLogLik
+double fnRepLogLik(NumericVector mu_ij_vec, const double& s_j, NumericVector y_ij_vec, NumericVector delta_ij_vec);
+RcppExport SEXP _bnpzimnr_fnRepLogLik(SEXP mu_ij_vecSEXP, SEXP s_jSEXP, SEXP y_ij_vecSEXP, SEXP delta_ij_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -348,13 +286,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double& >::type s_j(s_jSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type y_ij_vec(y_ij_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type delta_ij_vec(delta_ij_vecSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnRepLogLikNoGamma(mu_ij_vec, s_j, y_ij_vec, delta_ij_vec));
+    rcpp_result_gen = Rcpp::wrap(fnRepLogLik(mu_ij_vec, s_j, y_ij_vec, delta_ij_vec));
     return rcpp_result_gen;
 END_RCPP
 }
-// fnSubjectLogLikNoGamma
-double fnSubjectLogLikNoGamma(const double& k, NumericVector y_j_vec, const double& s_j, NumericVector mu_j_vec, NumericVector delta_j_vec, NumericVector condition);
-RcppExport SEXP _bnpzimnr_fnSubjectLogLikNoGamma(SEXP kSEXP, SEXP y_j_vecSEXP, SEXP s_jSEXP, SEXP mu_j_vecSEXP, SEXP delta_j_vecSEXP, SEXP conditionSEXP) {
+// fnSubjectLogLik
+double fnSubjectLogLik(const double& k, NumericVector y_j_vec, const double& s_j, NumericVector mu_j_vec, NumericVector delta_j_vec, NumericVector condition);
+RcppExport SEXP _bnpzimnr_fnSubjectLogLik(SEXP kSEXP, SEXP y_j_vecSEXP, SEXP s_jSEXP, SEXP mu_j_vecSEXP, SEXP delta_j_vecSEXP, SEXP conditionSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -364,7 +302,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type mu_j_vec(mu_j_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type delta_j_vec(delta_j_vecSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
-    rcpp_result_gen = Rcpp::wrap(fnSubjectLogLikNoGamma(k, y_j_vec, s_j, mu_j_vec, delta_j_vec, condition));
+    rcpp_result_gen = Rcpp::wrap(fnSubjectLogLik(k, y_j_vec, s_j, mu_j_vec, delta_j_vec, condition));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -586,6 +524,74 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fnGetMuJVecProp
+NumericVector fnGetMuJVecProp(const double& k, NumericVector mu_j_vec_curr, const double& theta_kj_curr, const double& theta_kj_prop, NumericVector r_vec, NumericVector alpha_j_vec, NumericVector condition, NumericVector subject);
+RcppExport SEXP _bnpzimnr_fnGetMuJVecProp(SEXP kSEXP, SEXP mu_j_vec_currSEXP, SEXP theta_kj_currSEXP, SEXP theta_kj_propSEXP, SEXP r_vecSEXP, SEXP alpha_j_vecSEXP, SEXP conditionSEXP, SEXP subjectSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const double& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mu_j_vec_curr(mu_j_vec_currSEXP);
+    Rcpp::traits::input_parameter< const double& >::type theta_kj_curr(theta_kj_currSEXP);
+    Rcpp::traits::input_parameter< const double& >::type theta_kj_prop(theta_kj_propSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type alpha_j_vec(alpha_j_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
+    rcpp_result_gen = Rcpp::wrap(fnGetMuJVecProp(k, mu_j_vec_curr, theta_kj_curr, theta_kj_prop, r_vec, alpha_j_vec, condition, subject));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fnSampThetaMat
+NumericMatrix fnSampThetaMat(NumericMatrix Theta_mat, NumericMatrix Mu_mat, NumericMatrix C_theta_mat, NumericMatrix Theta_star_mat, NumericMatrix Delta_mat, NumericVector sigma_2_theta_vec, NumericVector s_vec, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Y_mat, NumericVector condition, NumericVector subject, NumericMatrix B_mat, NumericMatrix Delta_sum_mat, const double& theta_kj_proposal_sd);
+RcppExport SEXP _bnpzimnr_fnSampThetaMat(SEXP Theta_matSEXP, SEXP Mu_matSEXP, SEXP C_theta_matSEXP, SEXP Theta_star_matSEXP, SEXP Delta_matSEXP, SEXP sigma_2_theta_vecSEXP, SEXP s_vecSEXP, SEXP r_vecSEXP, SEXP Alpha_matSEXP, SEXP Y_matSEXP, SEXP conditionSEXP, SEXP subjectSEXP, SEXP B_matSEXP, SEXP Delta_sum_matSEXP, SEXP theta_kj_proposal_sdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_mat(Theta_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Mu_mat(Mu_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type C_theta_mat(C_theta_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_star_mat(Theta_star_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_mat(Delta_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sigma_2_theta_vec(sigma_2_theta_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type s_vec(s_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Alpha_mat(Alpha_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Y_mat(Y_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type B_mat(B_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_sum_mat(Delta_sum_matSEXP);
+    Rcpp::traits::input_parameter< const double& >::type theta_kj_proposal_sd(theta_kj_proposal_sdSEXP);
+    rcpp_result_gen = Rcpp::wrap(fnSampThetaMat(Theta_mat, Mu_mat, C_theta_mat, Theta_star_mat, Delta_mat, sigma_2_theta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, theta_kj_proposal_sd));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fnSampThetaMatMarg
+NumericMatrix fnSampThetaMatMarg(NumericMatrix Theta_mat, NumericMatrix Mu_mat, NumericVector psi_theta_vec, NumericMatrix Theta_star_mat, NumericMatrix Delta_mat, NumericVector sigma_2_theta_vec, NumericVector s_vec, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Y_mat, NumericVector condition, NumericVector subject, NumericMatrix B_mat, NumericMatrix Delta_sum_mat, const double& theta_kj_proposal_sd);
+RcppExport SEXP _bnpzimnr_fnSampThetaMatMarg(SEXP Theta_matSEXP, SEXP Mu_matSEXP, SEXP psi_theta_vecSEXP, SEXP Theta_star_matSEXP, SEXP Delta_matSEXP, SEXP sigma_2_theta_vecSEXP, SEXP s_vecSEXP, SEXP r_vecSEXP, SEXP Alpha_matSEXP, SEXP Y_matSEXP, SEXP conditionSEXP, SEXP subjectSEXP, SEXP B_matSEXP, SEXP Delta_sum_matSEXP, SEXP theta_kj_proposal_sdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_mat(Theta_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Mu_mat(Mu_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type psi_theta_vec(psi_theta_vecSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_star_mat(Theta_star_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_mat(Delta_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sigma_2_theta_vec(sigma_2_theta_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type s_vec(s_vecSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Alpha_mat(Alpha_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Y_mat(Y_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type B_mat(B_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Delta_sum_mat(Delta_sum_matSEXP);
+    Rcpp::traits::input_parameter< const double& >::type theta_kj_proposal_sd(theta_kj_proposal_sdSEXP);
+    rcpp_result_gen = Rcpp::wrap(fnSampThetaMatMarg(Theta_mat, Mu_mat, psi_theta_vec, Theta_star_mat, Delta_mat, sigma_2_theta_vec, s_vec, r_vec, Alpha_mat, Y_mat, condition, subject, B_mat, Delta_sum_mat, theta_kj_proposal_sd));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fnAprxEql
 bool fnAprxEql(double x, double y);
 RcppExport SEXP _bnpzimnr_fnAprxEql(SEXP xSEXP, SEXP ySEXP) {
@@ -613,17 +619,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // fnMuMatCorrect
-void fnMuMatCorrect(NumericMatrix Mu_mat, NumericMatrix Delta_mat, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Beta_mat, NumericVector rep_K);
-RcppExport SEXP _bnpzimnr_fnMuMatCorrect(SEXP Mu_matSEXP, SEXP Delta_matSEXP, SEXP r_vecSEXP, SEXP Alpha_matSEXP, SEXP Beta_matSEXP, SEXP rep_KSEXP) {
+void fnMuMatCorrect(NumericMatrix Mu_mat, NumericMatrix Delta_mat, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Theta_mat, NumericVector rep_K, NumericVector subject, NumericVector condition, Nullable<NumericMatrix> Xtbeta_mat_);
+RcppExport SEXP _bnpzimnr_fnMuMatCorrect(SEXP Mu_matSEXP, SEXP Delta_matSEXP, SEXP r_vecSEXP, SEXP Alpha_matSEXP, SEXP Theta_matSEXP, SEXP rep_KSEXP, SEXP subjectSEXP, SEXP conditionSEXP, SEXP Xtbeta_mat_SEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type Mu_mat(Mu_matSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Delta_mat(Delta_matSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type r_vec(r_vecSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Alpha_mat(Alpha_matSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type Beta_mat(Beta_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Theta_mat(Theta_matSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type rep_K(rep_KSEXP);
-    fnMuMatCorrect(Mu_mat, Delta_mat, r_vec, Alpha_mat, Beta_mat, rep_K);
+    Rcpp::traits::input_parameter< NumericVector >::type subject(subjectSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type condition(conditionSEXP);
+    Rcpp::traits::input_parameter< Nullable<NumericMatrix> >::type Xtbeta_mat_(Xtbeta_mat_SEXP);
+    fnMuMatCorrect(Mu_mat, Delta_mat, r_vec, Alpha_mat, Theta_mat, rep_K, subject, condition, Xtbeta_mat_);
     return R_NilValue;
 END_RCPP
 }
@@ -631,10 +640,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_bnpzimnr_fnAlphaijLogLik", (DL_FUNC) &_bnpzimnr_fnAlphaijLogLik, 10},
     {"_bnpzimnr_fnSampAlphaMat", (DL_FUNC) &_bnpzimnr_fnSampAlphaMat, 13},
-    {"_bnpzimnr_fnGetMuJVecProp", (DL_FUNC) &_bnpzimnr_fnGetMuJVecProp, 8},
-    {"_bnpzimnr_fnSampBetaMat", (DL_FUNC) &_bnpzimnr_fnSampBetaMat, 15},
-    {"_bnpzimnr_fnSampBetaMatMarg", (DL_FUNC) &_bnpzimnr_fnSampBetaMatMarg, 15},
-    {"_bnpzimnr_fnSampDeltaMat", (DL_FUNC) &_bnpzimnr_fnSampDeltaMat, 25},
+    {"_bnpzimnr_fnSampBetaMat", (DL_FUNC) &_bnpzimnr_fnSampBetaMat, 9},
+    {"_bnpzimnr_fnSampDeltaMat", (DL_FUNC) &_bnpzimnr_fnSampDeltaMat, 26},
     {"_bnpzimnr_fnStickBreak", (DL_FUNC) &_bnpzimnr_fnStickBreak, 1},
     {"_bnpzimnr_fnSampStarMatCommon", (DL_FUNC) &_bnpzimnr_fnSampStarMatCommon, 9},
     {"_bnpzimnr_fnSampStarMat", (DL_FUNC) &_bnpzimnr_fnSampStarMat, 6},
@@ -643,12 +650,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bnpzimnr_fnSampCMat", (DL_FUNC) &_bnpzimnr_fnSampCMat, 6},
     {"_bnpzimnr_fnSampXiMat", (DL_FUNC) &_bnpzimnr_fnSampXiMat, 8},
     {"_bnpzimnr_fnSampXiMatMarg", (DL_FUNC) &_bnpzimnr_fnSampXiMatMarg, 8},
-    {"_bnpzimnr_fnLogLikNoGamma", (DL_FUNC) &_bnpzimnr_fnLogLikNoGamma, 4},
-    {"_bnpzimnr_fnLogLikNoFac", (DL_FUNC) &_bnpzimnr_fnLogLikNoFac, 4},
-    {"_bnpzimnr_fnOtuLogLikNoFac", (DL_FUNC) &_bnpzimnr_fnOtuLogLikNoFac, 5},
+    {"_bnpzimnr_fnLogLik", (DL_FUNC) &_bnpzimnr_fnLogLik, 4},
+    {"_bnpzimnr_fnOtuLogLik", (DL_FUNC) &_bnpzimnr_fnOtuLogLik, 5},
     {"_bnpzimnr_fnSampleLogLikNoGamma", (DL_FUNC) &_bnpzimnr_fnSampleLogLikNoGamma, 4},
-    {"_bnpzimnr_fnRepLogLikNoGamma", (DL_FUNC) &_bnpzimnr_fnRepLogLikNoGamma, 4},
-    {"_bnpzimnr_fnSubjectLogLikNoGamma", (DL_FUNC) &_bnpzimnr_fnSubjectLogLikNoGamma, 6},
+    {"_bnpzimnr_fnRepLogLik", (DL_FUNC) &_bnpzimnr_fnRepLogLik, 4},
+    {"_bnpzimnr_fnSubjectLogLik", (DL_FUNC) &_bnpzimnr_fnSubjectLogLik, 6},
     {"_bnpzimnr_fnWlLogLik", (DL_FUNC) &_bnpzimnr_fnWlLogLik, 10},
     {"_bnpzimnr_fnSampWVec", (DL_FUNC) &_bnpzimnr_fnSampWVec, 10},
     {"_bnpzimnr_fnSampEtaVec", (DL_FUNC) &_bnpzimnr_fnSampEtaVec, 8},
@@ -661,9 +667,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_bnpzimnr_fnSjTildeLogLik", (DL_FUNC) &_bnpzimnr_fnSjTildeLogLik, 7},
     {"_bnpzimnr_fnSampSVec", (DL_FUNC) &_bnpzimnr_fnSampSVec, 8},
     {"_bnpzimnr_fnSampSigma2", (DL_FUNC) &_bnpzimnr_fnSampSigma2, 5},
+    {"_bnpzimnr_fnGetMuJVecProp", (DL_FUNC) &_bnpzimnr_fnGetMuJVecProp, 8},
+    {"_bnpzimnr_fnSampThetaMat", (DL_FUNC) &_bnpzimnr_fnSampThetaMat, 15},
+    {"_bnpzimnr_fnSampThetaMatMarg", (DL_FUNC) &_bnpzimnr_fnSampThetaMatMarg, 15},
     {"_bnpzimnr_fnAprxEql", (DL_FUNC) &_bnpzimnr_fnAprxEql, 2},
     {"_bnpzimnr_fnAcceptProposal", (DL_FUNC) &_bnpzimnr_fnAcceptProposal, 4},
-    {"_bnpzimnr_fnMuMatCorrect", (DL_FUNC) &_bnpzimnr_fnMuMatCorrect, 6},
+    {"_bnpzimnr_fnMuMatCorrect", (DL_FUNC) &_bnpzimnr_fnMuMatCorrect, 9},
     {NULL, NULL, 0}
 };
 

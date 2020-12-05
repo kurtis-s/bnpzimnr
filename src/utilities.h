@@ -33,44 +33,56 @@ bool fnAcceptProposal(const double & curr_log_lik, const double & prop_log_lik, 
 }
 
 // [[Rcpp::export]]
-void fnMuMatCorrect(NumericMatrix Mu_mat, NumericMatrix Delta_mat, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Beta_mat, NumericVector rep_K) {
-    const int & n = Alpha_mat.nrow();
+void fnMuMatCorrect(NumericMatrix Mu_mat, NumericMatrix Delta_mat, NumericVector r_vec, NumericMatrix Alpha_mat, NumericMatrix Theta_mat, NumericVector rep_K, NumericVector subject, NumericVector condition, Nullable<NumericMatrix> Xtbeta_mat_=R_NilValue) {
+    // const int & n = Alpha_mat.nrow();
     const int & J = Alpha_mat.ncol();
+    const int & N= Mu_mat.nrow();
 
-    int ik=-1;
-    int K=-1;
+    NumericMatrix Xtbeta_mat(1, 1);
+    double log_calc_mu_ikj;
+    double calc_mu_ikj;
+    int k = -1;
+    int i = -1;
     for(int j=0; j<J; j++) {
-        ik=0;
-        for(int i=0; i<n; i++) {
-            K = rep_K[i];
-            for(int k=0; k<K; k++) {
-                // if( (Delta_mat(ik, j) == 1) && !fnAprxEql(log(Mu_mat(ik, j)), r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j)) ) {
-                if( (Delta_mat(ik, j) == 1) && !fnAprxEql(Mu_mat(ik, j), exp(r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j))) ) {
-                    Rcpp::Rcout << "i=" << i << std::endl;
-                    Rcpp::Rcout << "k=" << k << std::endl;
-                    Rcpp::Rcout << "ik=" << ik << std::endl;
-                    Rcpp::Rcout << "j=" << j << std::endl;
-                    Rcpp::Rcout << "r=" << r_vec[ik] << std::endl;
-                    Rcpp::Rcout << "alpha=" << Alpha_mat(i, j) << std::endl;
-                    Rcpp::Rcout << "beta=" << Beta_mat(k, j) << std::endl;
-                    Rcpp::Rcout <<  std::setprecision(30) << "Mu.ikj=" << Mu_mat(ik, j) << std::endl;
-                    Rcpp::Rcout <<  std::setprecision(30) << "Calculated Mu.ikj=" << exp(r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j)) << std::endl;
-                    Rcpp::Rcout <<  std::setprecision(30) << "log(Mu.ikj)=" << log(Mu_mat(ik, j)) << std::endl;
-                    Rcpp::Rcout <<  std::setprecision(30) << "Calculated log(Mu.ikj)=" << r_vec[ik] + Alpha_mat(i, j) + Beta_mat(k, j) << std::endl << std::endl;
-                    stop("Mu.ikj inconsistent");
+        for(int ik=0; ik<N; ik++) {
+            k = condition[ik] - 1;
+            i = subject[ik] - 1;
+            // if( (Delta_mat(ik, j) == 1) && !fnAprxEql(log(Mu_mat(ik, j)), r_vec[ik] + Alpha_mat(i, j) + Theta_mat(k, j)) ) {
+            if(Xtbeta_mat_.isNull()) {
+                log_calc_mu_ikj = r_vec[ik] + Alpha_mat(i, j) + Theta_mat(k, j);
+            }
+            else {
+                Xtbeta_mat = NumericMatrix(Xtbeta_mat_);
+                log_calc_mu_ikj = r_vec[ik] + Alpha_mat(i, j) + Theta_mat(k, j) + Xtbeta_mat(ik, j);
+            }
+            calc_mu_ikj = exp(log_calc_mu_ikj);
+            if( (Delta_mat(ik, j) == 1) && !fnAprxEql(Mu_mat(ik, j), calc_mu_ikj) ){
+                Rcpp::Rcout << "i=" << i << std::endl;
+                Rcpp::Rcout << "k=" << k << std::endl;
+                Rcpp::Rcout << "ik=" << ik << std::endl;
+                Rcpp::Rcout << "j=" << j << std::endl;
+                Rcpp::Rcout << "r=" << r_vec[ik] << std::endl;
+                Rcpp::Rcout << "alpha=" << Alpha_mat(i, j) << std::endl;
+                Rcpp::Rcout << "theta=" << Theta_mat(k, j) << std::endl;
+                Rcpp::Rcout <<  std::setprecision(30) << "Mu.ikj=" << Mu_mat(ik, j) << std::endl;
+                Rcpp::Rcout <<  std::setprecision(30) << "Calculated Mu.ikj=" << calc_mu_ikj << std::endl;
+                Rcpp::Rcout <<  std::setprecision(30) << "log(Mu.ikj)=" << log(Mu_mat(ik, j)) << std::endl;
+                if(Xtbeta_mat_.isNotNull()) {
+                    Rcpp::Rcout <<  "xtbeta=" << Xtbeta_mat(ik, j) << std::endl;
                 }
-                if( (Delta_mat(ik, j) == 0) && !(Mu_mat(ik, j)==0) ) {
-                    Rcpp::Rcout << "i=" << i << std::endl;
-                    Rcpp::Rcout << "k=" << k << std::endl;
-                    Rcpp::Rcout << "ik=" << ik << std::endl;
-                    Rcpp::Rcout << "j=" << j << std::endl;
-                    Rcpp::Rcout << "r=" << r_vec[ik] << std::endl;
-                    Rcpp::Rcout << "alpha=" << Alpha_mat(i, j) << std::endl;
-                    Rcpp::Rcout << "beta=" << Beta_mat(k, j) << std::endl;
-                    Rcpp::Rcout << "Mu.ikj=" << std::setprecision(30) << Mu_mat(ik, j) << std::endl;
-                    stop("delta.ikj = 0 but mu.ikj != 0");
-                }
-                ik++;
+                Rcpp::Rcout <<  std::setprecision(30) << "Calculated log(Mu.ikj)=" << log_calc_mu_ikj << std::endl << std::endl;
+                stop("Mu.ikj inconsistent");
+            }
+            if( (Delta_mat(ik, j) == 0) && !(Mu_mat(ik, j)==0) ) {
+                Rcpp::Rcout << "i=" << i << std::endl;
+                Rcpp::Rcout << "k=" << k << std::endl;
+                Rcpp::Rcout << "ik=" << ik << std::endl;
+                Rcpp::Rcout << "j=" << j << std::endl;
+                Rcpp::Rcout << "r=" << r_vec[ik] << std::endl;
+                Rcpp::Rcout << "alpha=" << Alpha_mat(i, j) << std::endl;
+                Rcpp::Rcout << "theta=" << Theta_mat(k, j) << std::endl;
+                Rcpp::Rcout << "Mu.ikj=" << std::setprecision(30) << Mu_mat(ik, j) << std::endl;
+                stop("delta.ikj = 0 but mu.ikj != 0");
             }
         }
     }

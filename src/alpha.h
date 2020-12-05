@@ -23,7 +23,7 @@ double fnAlphaijLogLik(const double & alpha_ij, NumericVector mu_ij_vec, const d
         stop("Inconsistent value for lambda.ij in fnAlphaijLogLik");
     }
 
-    double likelihood_part = fnRepLogLikNoGamma(mu_ij_vec, s_j, y_ij_vec, delta_ij_vec);
+    double likelihood_part = fnRepLogLik(mu_ij_vec, s_j, y_ij_vec, delta_ij_vec);
 
     return prior_part + likelihood_part;
 }
@@ -37,17 +37,9 @@ NumericMatrix fnSampAlphaMat(NumericMatrix Alpha_mat, NumericMatrix Mu_mat,
     const int & n = Alpha_mat.nrow();
     const int & J = Alpha_mat.ncol();
 
-    // Function doesn't actually use rep_K, check all K_i are the same for safety
-    const int & K = rep_K[0]; // Only works if all subjects have the same number of replicates
-    if(!all(rep_K == K).is_true()) stop("fnSampAlphaMat expects all subjects to have the same number of replicates");
-
-
+    int K_i=-1; // Number of replicates for that subject
     double curr_log_lik;
     double prop_log_lik;
-    NumericVector mu_ij_vec(K);
-    NumericVector mu_ij_prop(K);
-    NumericVector delta_ij_vec(K);
-    NumericVector y_ij_vec(K);
     double alpha_ij_prop;
     int ell_idx0;
     int ij=0;
@@ -56,11 +48,18 @@ NumericMatrix fnSampAlphaMat(NumericMatrix Alpha_mat, NumericMatrix Mu_mat,
     for(int j=0; j<J; j++) {
         ik=0;
         for(int i=0; i<n; i++) {
+            K_i = rep_K[i];
+
             if(!R_IsNA(Alpha_mat(i, j))) { // Only sample alpha.ij if it isn't NA
+                NumericVector mu_ij_vec(K_i);
+                NumericVector mu_ij_prop(K_i);
+                NumericVector delta_ij_vec(K_i);
+                NumericVector y_ij_vec(K_i);
                 ik_start = ik;
                 alpha_ij_prop = Alpha_mat(i, j) + R::rnorm(0.0, alpha_ij_proposal_sd);
-                for(int k=0; k<K; k++) {
+                for(int k=0; k<K_i; k++) {
                     mu_ij_vec[k] = Mu_mat(ik, j);
+                    // mu_ij_prop[k] = Mu_mat(ik, j)/exp(Alpha_mat(i, j))*exp(alpha_ij_prop);
                     mu_ij_prop[k] = exp(log(Mu_mat(ik, j)) - Alpha_mat(i, j) + alpha_ij_prop);
                     delta_ij_vec[k] = Delta_mat(ik, j);
                     y_ij_vec[k] = Y_mat(ik, j);
@@ -73,11 +72,12 @@ NumericMatrix fnSampAlphaMat(NumericMatrix Alpha_mat, NumericMatrix Mu_mat,
 
                 if(fnAcceptProposal(curr_log_lik, prop_log_lik)) {
                     Alpha_mat(i, j) = alpha_ij_prop;
-                    for(int k=0; k<K; k++) Mu_mat(ik_start + k, j) = mu_ij_prop[k];
+                    for(int k=0; k<K_i; k++) Mu_mat(ik_start + k, j) = mu_ij_prop[k];
                 }
             }
             else {
-                ik += K; // Still need to increment ik even if alpha.ij is NA
+                // ik += K; // Still need to increment ik even if alpha.ij is NA
+                for(int k=0; k<K_i; k++) ik++;
             }
 
             ij++;

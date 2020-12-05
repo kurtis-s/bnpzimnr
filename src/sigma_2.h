@@ -16,7 +16,7 @@ NumericVector fnSampSigma2(NumericMatrix Param_mat, NumericMatrix Param_star_mat
     std::fill(b_prime.begin(), b_prime.end(), b_param);
     for(int j=0; j<J; j++) {
         for(int k=0; k<K; k++) {
-            if( (Param_mat(k, j) != 0.0) && (!R_IsNA(Param_mat(k, j))) ) { // To handle the case where beta_kj doesn't exist
+            if( (Param_mat(k, j) != 0.0) && (!R_IsNA(Param_mat(k, j))) ) { // To handle the case where theta_kj doesn't exist
                 a_prime[k] += 1.0/2.0;
                 b_prime[k] += (1.0/2.0) * pow(Param_mat(k, j) - Param_star_mat(k, C_mat(k, j)-1), 2.0);
             }

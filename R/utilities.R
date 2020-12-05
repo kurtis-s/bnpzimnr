@@ -23,21 +23,26 @@ fnGetDeltaSumMat <- function(B.mat) {
 
 #' Calculate Mu.mat from the other parameters
 #'
-fnGetMuMat <- function(r.vec, Alpha.mat, Beta.mat, Delta.mat, s.vec) {
+#' @export
+fnGetMuMat <- function(r.vec, Alpha.mat, Theta.mat, Delta.mat, s.vec, i.vec, k.vec, X.mat=NA, Beta.mat=NA) {
+    if(is.na(X.mat) && !is.na(Beta.mat)) stop("X.mat not NA but Beta.m provided")
+    if(!is.na(X.mat) && is.na(Beta.mat)) stop("X.mat not NA but X.mat provided")
+
     J <- length(s.vec)
-    K <- nrow(Beta.mat)
+    K <- nrow(Theta.mat)
     n <- nrow(Alpha.mat)
-    i.vec <- rep(1:n, each=K)
-    k.vec <- rep(1:K, times=n)
 
     # Repeat the params as necessary to make NxJ matrices for Mu.mat
     R.mat.tmp <- matrix(r.vec, ncol=1)[, rep(1, J)]
     Alpha.mat.tmp <- Alpha.mat[i.vec,]
-    Beta.mat.tmp <- Beta.mat[k.vec,]
+    Theta.mat.tmp <- Theta.mat[k.vec,]
 
-    Mu.mat <- exp(R.mat.tmp + Alpha.mat.tmp + Beta.mat.tmp)
+    if(is.na(X.mat) && is.na(Beta.mat)) {
+        Mu.mat <- exp(R.mat.tmp + Alpha.mat.tmp + Theta.mat.tmp)
+    } else {
+        Mu.mat <- exp(R.mat.tmp + Alpha.mat.tmp + Theta.mat.tmp + X.mat %*% Beta.mat)
+    }
     Mu.mat[Delta.mat==0] <- 0
 
     return(Mu.mat)
 }
-

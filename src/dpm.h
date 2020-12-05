@@ -2,7 +2,10 @@
 #define DPM_H
 
 #include <Rcpp.h>
+// #include <RcppTN.h>
 using namespace Rcpp;
+
+// // [[Rcpp::depends(RcppTN)]]
 
 // [[Rcpp::export]]
 NumericVector fnStickBreak(NumericVector weights) {
@@ -108,7 +111,7 @@ void fnSampC(const double & k, const double & j, NumericMatrix C_mat, NumericMat
         d_vec[l_idx1_new-1] += 1;
     }
     else {
-        C_mat(k, j) = NA_REAL; // Low abundance case delta_kj=0, or beta_kj=0 because sum(delta_kj)=1
+        C_mat(k, j) = NA_REAL; // Low abundance case delta_kj=0, or theta_kj=0 because sum(delta_kj)=1
     }
 }
 
